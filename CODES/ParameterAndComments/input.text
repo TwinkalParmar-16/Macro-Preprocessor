@@ -1,0 +1,80 @@
+MACRO->[twinkal]
+0
+mov a,b
+[twinkal]<-MACRO
+
+MACRO->[amit]
+1
+~arg1
+mov ~arg1
+[amit]<-MACRO
+
+MACRO->[maa_paa]
+5
+~ab,~bc,~ca,~da,~qa
+add ~ab
+mov ~bc
+add ~ca
+sub ~da
+mul ~qa
+[maa_paa]<-MACRO
+
+
+section		.data
+	msg1 db 'The value of i is %d',0xa
+	msg2 db 'The value of n is %d',0xa
+	msg db 'The result is %d',0xa
+	
+section		.text
+	extern printf
+	extern atoi
+	global main
+main:
+
+maa_paa ARG(5):9,8,7,6,5
+	push ebp
+	mov ebp,esp
+	
+	mov ebx, DWORD[esp+12]
+	mov esi, [ebx+4] 	;value of i
+	mov ebx, [ebx+8]	;value of n
+	
+	push esi
+	call atoi
+	mov esi,eax
+
+amit ARG(1):xyz	
+	add esp,4
+	push esi
+	;push msg1
+	;call printf
+	;add esp,8
+	
+	push ebx
+	call atoi
+	mov ebx,eax
+
+twinkal	
+	add esp,4
+	;push ebx
+	;push msg2
+	;call printf
+	
+	mov eax,1
+	inc ebx
+	
+	label:
+	mul esi
+	inc esi
+	cmp esi,ebx
+	jne label
+	
+	mul eax 
+	
+	push eax
+	push msg
+	call printf
+	
+	mov esp,ebp
+	pop ebp
+	ret

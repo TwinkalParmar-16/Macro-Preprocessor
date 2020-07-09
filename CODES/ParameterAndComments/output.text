@@ -1,0 +1,50 @@
+section		.data
+msg1 db 'The value of i is %d',0xa
+msg2 db 'The value of n is %d',0xa
+msg db 'The result is %d',0xa
+section		.text
+extern printf
+extern atoi
+global main
+main:
+add 9
+mov 8
+add 7
+sub 6
+mul 5
+push ebp
+mov ebp,esp
+mov ebx, DWORD[esp+12]
+mov esi, [ebx+4] 	;value of i
+mov ebx, [ebx+8]	;value of n
+push esi
+call atoi
+mov esi,eax
+mov xyz
+add esp,4
+push esi
+;push msg1
+;call printf
+;add esp,8
+push ebx
+call atoi
+mov ebx,eax
+mov a,b
+add esp,4
+;push ebx
+;push msg2
+;call printf
+mov eax,1
+inc ebx
+label:
+mul esi
+inc esi
+cmp esi,ebx
+jne label
+mul eax
+push eax
+push msg
+call printf
+mov esp,ebp
+pop ebp
+ret

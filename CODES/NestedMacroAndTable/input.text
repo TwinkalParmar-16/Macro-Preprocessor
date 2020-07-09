@@ -1,0 +1,39 @@
+MACRO->[nested1]
+1
+~arg1
+push ~arg1
+call atoi;
+add esp,4
+     MACRO->[nested2]
+     1
+     ~arg1
+     mov ~arg1,eax
+     push ~arg1
+    push msg1
+    call printf
+    add esp,8
+    [nested2]<-MACRO
+[nested1]<-MACRO
+     
+SECTION .data
+msg1 db "you entered=%d",0,10
+msg2 db "you entered=%d",0,10
+
+SECTION .text
+        extern printf
+        extern atoi
+        global main
+main:
+
+push ebp
+mov ebp,esp
+
+mov ebx,DWORD[esp+12]
+mov esi,[ebx+4]
+mov ebx,[ebx+8]
+
+nested1 ARG(1):esi
+nested1 ARG(1):ebx
+mov esp,ebp
+pop ebp
+ret
